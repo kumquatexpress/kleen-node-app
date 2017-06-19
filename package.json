@@ -1,0 +1,26 @@
+{
+  "name": "container-development-node",
+  "maintainer": "Boyang Niu",
+  "license": "MIT",
+  "version": "0.0.1",
+  "main": "app.js",
+  "scripts": {
+    "start": "pm2 start --no-daemon --name server gulp -- develop"
+  },
+  "dependencies": {
+    "koa": "^2.2.0",
+    "koa-router": "^7.2.1"
+  },
+  "engines": {
+    "node": "7.10.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^3.0.0",
+    "gulp-watch": "^4.3.11",
+    "nodemon": "^1.11.0"
+  }
+}

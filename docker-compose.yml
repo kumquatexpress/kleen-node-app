@@ -1,0 +1,38 @@
+version: "3"
+services:
+  app:
+    container_name: app
+    image: docker-node:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ${HOME_DIR}:/src
+    networks:
+      - webnet
+  postgres:
+    container_name: postgres
+    restart: always
+    image: postgres:9.5
+    volumes:
+      - ${HOME_DIR}/database/postgres:/var/lib/postgresql
+    ports:
+      - "5432:5432"
+    networks:
+      - webnet
+    environment:
+      - POSTGRES_PASSWORD=${PG_PASSWORD}
+      - POSTGRES_USER=${PG_USER}
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:3.2
+    ports:
+      - "6379:6379"
+    volumes:
+      - ${HOME_DIR}/database/redis:/data
+    networks:
+      - webnet
+networks:
+  webnet:
+networks:
+  webnet:
