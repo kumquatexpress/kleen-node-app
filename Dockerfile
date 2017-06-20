@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
 	git \
 	vim \
 	redis-tools \
-	postgresql-client
+	postgresql-client \
+	mysql-client
 
 RUN npm i -g gulp pm2
 

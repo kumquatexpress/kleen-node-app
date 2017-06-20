@@ -9,19 +9,25 @@ services:
       - ${HOME_DIR}:/src
     networks:
       - webnet
-  postgres:
-    container_name: postgres
+    environment:
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+  mysql:
+    container_name: mysql
     restart: always
-    image: postgres:9.5
+    image: mysql:5.7.18
     volumes:
-      - ${HOME_DIR}/database/postgres:/var/lib/postgresql
+      - ${HOME_DIR}/database/mysql:/var/lib/mysql
     ports:
-      - "5432:5432"
+      - "3306:3306"
     networks:
       - webnet
     environment:
-      - POSTGRES_PASSWORD=${PG_PASSWORD}
-      - POSTGRES_USER=${PG_USER}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
   redis:
     container_name: redis
     restart: always

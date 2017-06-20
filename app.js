@@ -1,3 +1,5 @@
+'use strict'
+
 const Koa = require('koa')
 , app = new Koa()
 , apiRouter = require('./server/routes/api')
