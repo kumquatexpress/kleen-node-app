@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
 	postgresql-client \
 	mysql-client
 
-RUN npm i -g gulp pm2
+RUN npm i -g gulp pm2 db-migrate babel-cli
 
 RUN echo 'alias sync="rsync -avzu --exclude=node_modules --exclude=database /src/* /usr/src/app"' >> ~/.bashrc
 EXPOSE 3000
