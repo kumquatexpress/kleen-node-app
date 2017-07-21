@@ -17,4 +17,9 @@ module.exports = {
 		USER: env.PGUSER || 'nodeapp',
 		DATABASE: env.PGDATABASE || 'app_dev',
 	},
+	log: {
+		FILE: env.LOGFILE || 'app.log',
+		SIZE: env.LOGSIZE || 1024768*10,
+		NUM_FILES: env.LOG_NUM_FILES || 5,
+	},
 }

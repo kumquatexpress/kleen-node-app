@@ -4,12 +4,39 @@ const Router = require('koa-router')
 , apiRouter = new Router({
 	prefix: '/api',
 })
-, pg = require('../utils/postgres')
-, mysql = require('../utils/mysql')
-	
-apiRouter.get('/', async (ctx, next) => {
-	ctx.body = "Hello API!"
-	next()
-})
+, routeWrapper = require('./route_wrapper')
 
-module.exports = apiRouter
+const routes = {
+  index: {
+    path: '/',
+    controller: 'index',
+    methods: ['get'],
+    action: 'index'
+  },
+  example: {
+    path: '/example',
+    controller: 'index',
+    methods: ['get', 'post'],
+    action: 'example_args',
+    args: {
+      query: { a: 1, b: 2 },
+      headers: {
+        h1: 1, asdf: 'a'
+      },
+      body: { b1: 1 },
+    },
+  },
+  error: {
+    path: '/error',
+    controller: 'index',
+    methods: ['get', 'post'],
+    action: 'example_error',
+  },
+}
+
+module.exports = (() => {
+  Object.values(routes).forEach(route => {
+    return routeWrapper(apiRouter, route)
+  })
+  return apiRouter
+})()

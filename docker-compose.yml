@@ -10,9 +10,13 @@ services:
     networks:
       - webnet
     environment:
+      - MYSQL_HOST=${MYSQL_HOST}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
   mysql:
     container_name: mysql
     restart: always
