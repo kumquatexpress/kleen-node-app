@@ -8,7 +8,6 @@ const Promise = require('bluebird')
 	{
 		usePromise: true,
 		database: 1
-	},
-)
+	})
 
 module.exports = redisClient

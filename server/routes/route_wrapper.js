@@ -12,8 +12,9 @@ module.exports = (router, {
         query: _.merge({}, query, _.pick(ctx.request.query, _.keys(query))),
         body: _.merge({}, body, _.pick(ctx.request.body, _.keys(body))),
         headers: _.merge({}, headers, _.pick(ctx.headers, _.keys(headers))),
+        ip: ctx.request.ip,
       }
-      ctx.body = require(`../controllers/${controller}`)[action](args)
+      ctx.body = await require(`../controllers/${controller}`)[action](args)
       next()
     } catch (e) {
       if (e instanceof ApiError) {

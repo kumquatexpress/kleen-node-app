@@ -2,10 +2,20 @@
 
 const Router = require('koa-router')
 , webRouter = new Router()
+, routeWrapper = require('./route_wrapper')
 
-webRouter.get('/', function(ctx, next){
-	ctx.body = 'Hello world!'
-	next()
-})
+const routes = {
+  index: {
+    path: '/',
+    controller: 'index',
+    methods: ['get'],
+    action: 'index'
+  },
+}
 
-module.exports = webRouter
+module.exports = (() => {
+  Object.values(routes).forEach(route => {
+    return routeWrapper(webRouter, route)
+  })
+  return webRouter
+})()
