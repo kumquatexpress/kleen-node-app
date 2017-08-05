@@ -2,17 +2,55 @@
 const _ = require('lodash')
 , ApiError = require('../types/api_error')
 
+const checkAndSetDefaults = (checks, paramsToCheck) => {
+  return _.reduce(checks, (acc, check, _arg) => {
+    const {type: _type, required: _required, default: _default} = check
+
+    let arg = paramsToCheck[_arg]
+    if(!arg){
+      if(_required){
+        throw new ApiError(`Parameter ${_arg} is required.`)
+      }
+      acc[_arg] = _default
+      return acc
+    }
+
+    switch(_type){
+      case 'number':
+        arg = Number(arg)
+        if(isNaN(arg)){
+          throw new ApiError(`Parameter ${_arg} must be of type ${_type} is not a number.`)
+        }
+        break
+      case 'boolean':
+        if(arg === 'false'){
+          arg = false
+        }
+        arg = Boolean(arg)
+        break
+    }
+    if(typeof(arg) !== _type){
+      throw new ApiError(`Parameter ${_arg} must be of type ${_type} but is of type ${typeof(arg)}.`)
+    }
+    acc[_arg] = arg
+    return acc
+  }, {})
+}
+
 module.exports = (router, {
   path, controller, action, methods,
-  args: { query, body, headers } = {}
+  args: { query, body, headers, params } = {}
 }) => {
   const func = async (ctx, next) => {
     try {
       const args = {
-        query: _.merge({}, query, _.pick(ctx.request.query, _.keys(query))),
-        body: _.merge({}, body, _.pick(ctx.request.body, _.keys(body))),
-        headers: _.merge({}, headers, _.pick(ctx.headers, _.keys(headers))),
-        ip: ctx.request.ip,
+        query: checkAndSetDefaults(query, ctx.request.query),
+        body: checkAndSetDefaults(body, ctx.request.body),
+        headers: checkAndSetDefaults(headers, ctx.headers),
+        params: checkAndSetDefaults(params, ctx.params),
+        additional: {
+          ip: ctx.request.ip
+        }
       }
       ctx.body = await require(`../controllers/${controller}`)[action](args)
       next()

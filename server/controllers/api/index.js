@@ -4,10 +4,10 @@ const Promise = require('bluebird')
 , mysql = require('../../utils/mysql')
 
 class IndexController {
-  index({query, body, headers, ip}) {
-    return { message: 'Hello API!' }
+  index(args) {
+    return { args }
   }
-  async status({query, body, headers, ip}) {
+  async status() {
     const info = await Promise.props({
       redis: redis.info(),
       mysql: mysql.query(`SHOW STATUS LIKE 'Table%'`)

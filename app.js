@@ -4,6 +4,7 @@ const Koa = require('koa')
 , morgan = require('koa-morgan')
 , winston = require('winston')
 , app = new Koa()
+, bodyParser = require('koa-bodyparser')
 , apiRouter = require('./server/routes/api')
 , webRouter = require('./server/routes/web')
 , config = require('./config')
@@ -36,6 +37,7 @@ logger.stream = {
   }
 }
 
+app.use(bodyParser())
 app.use(morgan('combined', { "stream": logger.stream }))
 
 app.use(apiRouter.routes())
