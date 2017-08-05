@@ -6,6 +6,23 @@ const Router = require('koa-router')
 })
 , routeWrapper = require('./route_wrapper')
 , spotsRoutes = require('./spots')
+, graphqlHTTP = require('koa-graphql')
+, { buildSchema } = require('graphql')
+
+const schema = buildSchema(`
+  type Query {
+    hello: String
+  }
+`)
+const rootValue = {
+  hello: () => `hey`
+}
+
+apiRouter.all('/graphql', graphqlHTTP({
+  schema,
+  rootValue,
+  graphiql: true
+}))
 
 const routes = [
   {

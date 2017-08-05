@@ -1,6 +1,23 @@
 'use strict'
 const _ = require('lodash')
 
+const spotsIndexArgs = {
+  query: {
+    latitude: {
+      type: 'number'
+    },
+    longitude: {
+      type: 'number'
+    },
+    radius: {
+      type: 'number'
+    },
+    address: {
+      type: 'string'
+    }
+  }
+}
+
 const spotsCreateAndUpdateArgs = {
   body: {
     description: {
@@ -26,7 +43,8 @@ module.exports = [
     path: '/spots',
     controller: 'api/spots',
     methods: ['get'],
-    action: 'index'
+    action: 'index',
+    args: spotsIndexArgs
   },
   {
     name: 'create',

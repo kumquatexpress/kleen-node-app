@@ -1,12 +1,32 @@
 'use strict'
 const Promise = require('bluebird')
 , models = require('../../utils/models')
+, Sequelize = require('sequelize')
 
 class SpotsController {
   async index({
-    query
+    query: {
+      latitude, longitude, radius, address, limit = 10
+    }
   }) {
-    const spots = await models.spot.findAll({ limit: 10 })
+    let where
+    if(latitude && longitude && radius){
+      where = Sequelize.where(
+        Sequelize.fn(
+          'Distance',
+          Sequelize.literal(
+            `Point(${latitude}, ${longitude})`
+          ),
+          Sequelize.col('location')
+        ),
+        '<',
+        radius
+      )
+    }
+    const spots = await models.spot.findAll({
+      where,
+      limit
+    })
     return { spots }
   }
 
