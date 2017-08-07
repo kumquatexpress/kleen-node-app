@@ -1,3 +1,4 @@
+'use strict'
 const Sequelize = require('sequelize')
 , _ = require('lodash')
 , config = require(`${__dirname}/../../config`)
