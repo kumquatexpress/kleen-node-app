@@ -4,6 +4,7 @@ const Router = require('koa-router')
 , apiRouter = new Router({
 	prefix: '/api',
 })
+, passport = require('../utils/passport')
 , routeWrapper = require('./route_wrapper')
 , spotsRoutes = require('./spots')
 , graphqlValue = require('../utils/graphql')
@@ -13,6 +14,13 @@ apiRouter.all('/graphql', graphqlHTTP({
   schema: graphqlValue.spot,
   graphiql: true
 }))
+apiRouter.get('/auth/facebook', passport.authenticate('facebook'))
+apiRouter.get('/auth/facebook/callback',
+  passport.authenticate('facebook', {
+    failureRedirect: '/login?failed_login=1',
+    successRedirect: '/'
+  })
+)
 
 const routes = [
   {
@@ -29,7 +37,8 @@ const routes = [
     methods: ['get'],
     action: 'status'
   }
-].concat(spotsRoutes)
+]
+.concat(spotsRoutes)
 
 module.exports = (() => {
   routes.forEach(route => {

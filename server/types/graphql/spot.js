@@ -37,10 +37,29 @@ const graphqlLocationTypeQuery = new GraphQLInputObjectType({
     type: { type: GraphQLString }
   }
 })
+, locationWithRadiusQuery = function(opts){
+  return (findOptions, args) => {
+    const location = args.location
+    if(location){
+      findOptions.where = Sequelize.where(
+        Sequelize.fn(
+          'Distance',
+          Sequelize.literal(
+            `Point(${location.lat}, ${location.lon})`
+          ),
+          Sequelize.col(opts.column)
+        ),
+        '<',
+        location.radius
+      )
+    }
+    return findOptions
+  }
+}
 
-typeMapper.mapType((type) => {
+typeMapper.mapType(_type => {
    // map geometric points to object
-   if (type instanceof Sequelize.GEOMETRY) {
+   if (_type instanceof Sequelize.GEOMETRY) {
      return graphqlLocationType
    }
    return false
@@ -75,23 +94,7 @@ const schema = new GraphQLSchema({
           }
         }),
         resolve: resolver(Spot, {
-          before: (findOptions, args) => {
-            const location = args.location
-            if(location){
-              findOptions.where = Sequelize.where(
-                Sequelize.fn(
-                  'Distance',
-                  Sequelize.literal(
-                    `Point(${location.lat}, ${location.lon})`
-                  ),
-                  Sequelize.col('location')
-                ),
-                '<',
-                location.radius
-              )
-            }
-            return findOptions
-          }
+          before: locationWithRadiusQuery({column: 'location'})
         })
       }
     }

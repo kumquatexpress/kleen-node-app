@@ -11,6 +11,19 @@ const routes = {
     methods: ['get'],
     action: 'index'
   },
+  login: {
+    path: '/login',
+    controller: 'index',
+    methods: ['get'],
+    action: 'login',
+    args: {
+      query: {
+        failed_login: {
+          type: 'boolean'
+        }
+      }
+    }
+  }
 }
 
 module.exports = (() => {
