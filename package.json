@@ -9,6 +9,7 @@
     "db": "node scripts/sync_database_schema.js"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "bluebird": "^3.5.0",
     "graphql": "^0.10.5",
     "graphql-relay": "^0.5.2",
@@ -24,8 +25,10 @@
     "mysql": "^2.13.0",
     "mysql2": "^1.3.6",
     "passport-facebook": "^2.1.1",
+    "passport-local": "^1.0.0",
     "pg": "^6.2.4",
     "sequelize": "^4.4.2",
+    "sequelize-transparent-cache": "^1.1.1",
     "thunk-redis": "^2.1.2",
     "winston": "^2.3.1"
   },

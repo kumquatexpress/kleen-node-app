@@ -1,13 +1,24 @@
 'use strict'
 const passport = require('koa-passport')
 , passport_facebook = require('passport-facebook').Strategy
+, passport_local = require('passport-local').Strategy
 , config = require('../../config')
-, User = require('./models').user
-, FBID = require('./models').fb_id
+, {
+  user: User, fb_id: FBID, email_id: EmailID
+} = require('./models')
+
+const deserializeUser = async function(id, done){
+  try {
+    const user = await User.cache().findById(id)
+    done(null, user)
+  } catch(err) {
+    done(err)
+  }
+}
 
 const FacebookStrategy = new passport_facebook({
-  clientID: '653525334855870',
-  clientSecret: 'a142dbaf60301e77a1e045a87632719f',
+  clientID: config.auth.FB.APP_ID,
+  clientSecret: config.auth.FB.APP_SECRET,
   callbackURL: 'http://192.168.99.100/api/auth/facebook/callback'
 }, (access, refresh, profile, cb) => {
   FBID.find({
@@ -17,7 +28,7 @@ const FacebookStrategy = new passport_facebook({
   }).then(fbUser => {
     if(!fbUser){
       const [first_name, last_name] = profile.displayName.split(" ")
-      FBID.create({
+      FBID.cache().create({
         fbid: profile.id,
         user: {
           first_name,
@@ -29,24 +40,31 @@ const FacebookStrategy = new passport_facebook({
         cb(null, _fbUser.user)
       })
     } else {
-      User.findById(fbUser.user_id).then(user => {
-        cb(null, user)
-      })
+      deserializeUser(fbUser.user_id, cb)
     }
   })
 })
 
+const LocalStrategy = new passport_local({
+    usernameField: 'email'
+  },
+  (email, password, cb) => {
+    EmailID.findById(email)
+      .then(emailUser => {
+        if(emailUser && emailUser.validPassword(password)){
+          deserializeUser(emailUser.user_id, cb)
+        } else {
+          cb(null)
+        }
+      })
+  }
+)
+
 passport.use(FacebookStrategy)
+passport.use(LocalStrategy)
 passport.serializeUser(function(user, done) {
   done(null, user.id)
 })
-passport.deserializeUser(async function(id, done) {
-  try {
-    const user = await User.findById(id)
-    done(null, user)
-  } catch(err) {
-    done(err)
-  }
-})
+passport.deserializeUser(deserializeUser)
 
 module.exports = passport

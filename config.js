@@ -22,4 +22,10 @@ module.exports = {
 		SIZE: env.LOGSIZE || 1024768*10,
 		NUM_FILES: env.LOG_NUM_FILES || 5,
 	},
+	auth: {
+		FB: {
+			APP_ID: env.FB_APP_ID,
+			APP_SECRET: env.FB_APP_SECRET
+		}
+	}
 }

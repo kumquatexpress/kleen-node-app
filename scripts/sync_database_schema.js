@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+, _ = require('lodash')
 , Promise = require('bluebird')
 , config = require(`${__dirname}/../config`)
 , glob = require('glob')
@@ -16,9 +17,11 @@ const Sequelize = require('sequelize')
     }
   })
 
+const models = {}
 glob.sync(`${__dirname}/../server/types/models/*.js`).forEach(file => {
   console.log("syncing model", file)
-  require(file)(sequelize)
+  const modelName = _.take(_.takeRight(file.split('/'), 1)[0].split('.'), 1)[0]
+  models[modelName] = require(file)(sequelize)
 })
 
 sequelize.sync().then(() => {

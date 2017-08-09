@@ -2,36 +2,13 @@
 
 const Koa = require('koa')
 , morgan = require('koa-morgan')
-, winston = require('winston')
 , app = new Koa()
 , bodyParser = require('koa-bodyparser')
 , apiRouter = require('./server/routes/api')
 , webRouter = require('./server/routes/web')
 , session = require('koa-session')
-, config = require('./config')
 , passport = require('./server/utils/passport')
-, logger = new winston.Logger({
-  transports: [
-    new winston.transports.File({
-      level: 'info',
-      filename: config.log.FILE,
-      handleExceptions: true,
-      json: true,
-      maxsize: config.log.SIZE,
-      maxFiles: config.log.NUM_FILES,
-      colorize: false,
-      timestamp: true,
-    }),
-    new winston.transports.Console({
-      level: 'debug',
-      handleExceptions: true,
-      json: false,
-      colorize: true,
-      timestamp: true,
-    })
-  ],
-  exitOnError: false,
-})
+, logger = require('./server/utils/logger')
 
 logger.stream = {
   write: function(message, encoding){

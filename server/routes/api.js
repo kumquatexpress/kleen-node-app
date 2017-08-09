@@ -14,7 +14,17 @@ apiRouter.all('/graphql', graphqlHTTP({
   schema: graphqlValue.spot,
   graphiql: true
 }))
-apiRouter.get('/auth/facebook', passport.authenticate('facebook'))
+apiRouter.post('/login',
+  passport.authenticate('local', {
+    failureRedirect: '/login?failed_login=1',
+    successRedirect: '/'
+  })
+)
+apiRouter.get('/auth/facebook',
+  passport.authenticate('facebook', {
+    scope: [ 'email' ]
+  })
+)
 apiRouter.get('/auth/facebook/callback',
   passport.authenticate('facebook', {
     failureRedirect: '/login?failed_login=1',
