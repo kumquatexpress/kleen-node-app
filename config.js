@@ -25,7 +25,12 @@ module.exports = {
 	auth: {
 		FB: {
 			APP_ID: env.FB_APP_ID,
-			APP_SECRET: env.FB_APP_SECRET
+			APP_SECRET: env.FB_APP_SECRET,
+			CALLBACK_URL: '/api/auth/facebook/callback'
 		}
+	},
+	app: {
+		protocol: env.IS_PROD ? 'https://' : 'http://',
+		hostname: env.IS_PROD ? 'kleen-node.com' : '192.168.99.100'
 	}
 }

@@ -19,7 +19,7 @@ const deserializeUser = async function(id, done){
 const FacebookStrategy = new passport_facebook({
   clientID: config.auth.FB.APP_ID,
   clientSecret: config.auth.FB.APP_SECRET,
-  callbackURL: 'http://192.168.99.100/api/auth/facebook/callback'
+  callbackURL: `${config.app.protocol}${config.app.hostname}${config.auth.FB.CALLBACK_URL}`
 }, (access, refresh, profile, cb) => {
   FBID.find({
     where: { fbid: profile.id }

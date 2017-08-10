@@ -12,13 +12,15 @@ module.exports = seq => {
     },
     location: {
       type: Sequelize.GEOMETRY('POINT', 4326),
+      allowNull: false,
     }
   }, {
     underscored: true,
     tableName: 'spots',
     indexes: [
       {
-        fields: ['location']
+        fields: ['location'],
+        type: 'SPATIAL'
       }
     ]
   })

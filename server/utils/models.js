@@ -55,8 +55,8 @@ class RedisSequelizeAdapter {
 
 const sequelizeCache = require('sequelize-transparent-cache')
 const { withCache } = sequelizeCache(new RedisSequelizeAdapter({
-  namespace: 's',
-  ttl: 600
+  namespace: 'k',
+  ttl: 6000
 }))
 const models = {}
 
