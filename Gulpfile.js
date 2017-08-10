@@ -21,8 +21,8 @@ gulp.task('watch-public', () => {
 
 gulp.task('develop', ['watch-public'], () => {
   gulp.start('build-scripts')
-  nodemon({ 
-    script: 'app.js',
+  nodemon({
+    script: 'appdev.js',
     ext: 'js',
     env: { 'NODE_ENV': 'development' },
     ignore: [ 'public/dist/']
