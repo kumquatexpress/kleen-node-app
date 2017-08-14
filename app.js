@@ -1,14 +1,16 @@
 'use strict'
 
-const Koa = require('koa')
-, morgan = require('koa-morgan')
-, app = new Koa()
-, bodyParser = require('koa-bodyparser')
-, apiRouter = require('./server/routes/api')
-, webRouter = require('./server/routes/web')
-, session = require('koa-session')
-, passport = require('./server/utils/passport')
-, logger = require('./server/utils/logger')
+import Koa from 'koa'
+import morgan from 'koa-morgan'
+import bodyParser from 'koa-bodyparser'
+import apiRouter from './server/routes/api'
+import webRouter from './server/routes/web'
+import session from 'koa-session'
+import passport from './server/utils/passport'
+import logger from './server/utils/logger'
+import serve from 'koa-static'
+
+const app = new Koa()
 
 logger.stream = {
   write: function(message, encoding){
@@ -24,6 +26,7 @@ app.use(passport.session())
 app.use(bodyParser())
 app.use(morgan('combined', { "stream": logger.stream }))
 
+app.use(serve(__dirname + '/public'))
 app.use(apiRouter.routes())
 app.use(apiRouter.allowedMethods())
 

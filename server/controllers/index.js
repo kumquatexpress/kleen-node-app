@@ -1,9 +1,6 @@
 'use strict'
 
 class IndexController {
-  index(args) {
-    return 'Hello World!'
-  }
   login({
     query: { failed_login }
   }) {

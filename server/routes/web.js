@@ -5,12 +5,6 @@ const Router = require('koa-router')
 , routeWrapper = require('./route_wrapper')
 
 const routes = {
-  index: {
-    path: '/',
-    controller: 'index',
-    methods: ['get'],
-    action: 'index'
-  },
   login: {
     path: '/login',
     controller: 'index',

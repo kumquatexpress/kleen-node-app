@@ -5,18 +5,10 @@ module.exports = {
   entry: ["babel-polyfill", "./app.js"],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: 'server.js'
   },
   module: {
     loaders: [
-      {
-        test: /.jsx?$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          presets: ['es2015', 'react']
-        }
-      },
       {
         test: /\.es6$/,
         exclude: /node_modules/,
@@ -35,7 +27,6 @@ module.exports = {
     colors: true
   },
   plugins : [
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.IgnorePlugin(/pg-native/, /\/pg\//),
     new webpack.IgnorePlugin(/pg-hstore/, /\/sequelize\//),
