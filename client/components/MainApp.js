@@ -5,7 +5,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin()
 
 const MainApp = () => (
-  <RaisedButton label="Default" />
+  <RaisedButton label="Hey" />
 )
 
 export default MainApp

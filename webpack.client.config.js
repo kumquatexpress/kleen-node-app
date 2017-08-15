@@ -3,37 +3,33 @@ const path = require('path')
 , HtmlWebpackPlugin = require('html-webpack-plugin')
 , HTMLWebpackPluginConfig = new HtmlWebpackPlugin({
   template: __dirname + '/public/index.html',
-  filename: 'asdf.html',
   inject: 'body'
 })
 
 module.exports = {
   entry: {
-    javascript: path.join(__dirname, 'client/main.js')
+    javascript: path.join(__dirname, 'client/main.js'),
   },
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js'
   },
+  devServer: {
+    host: '0.0.0.0',
+    port: '80',
+    disableHostCheck: true
+  },
   module: {
     loaders: [
       {
         test: /.jsx?$/,
+        exclude: /node_modules/,
         loaders: ['react-hot-loader', 'babel-loader?' +
           JSON.stringify({
             cacheDirectory: true,
-            plugins: [
-              'transform-runtime',
-              'transform-async-to-generator'
-            ],
-            presets: ['es2015', 'stage-0', 'react']
+            presets: ['es2015', 'react']
           })
         ],
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.html$/,
-        loader: "file-loader?name=[name].[ext]",
       },
     ]
   },
@@ -48,6 +44,5 @@ module.exports = {
     }),
     HTMLWebpackPluginConfig,
   ],
-  devtool: 'source-map',
-  target: 'node'
+  devtool: 'source-map'
 }

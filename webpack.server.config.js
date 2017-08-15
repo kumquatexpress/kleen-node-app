@@ -10,12 +10,15 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.es6$/,
-        exclude: /node_modules/,
+        test: /\.jsx?$/,
         loader: 'babel-loader',
         query: {
-          presets: ['es2015']
-        }
+          presets: ['es2015', 'stage0']
+        },
+        plugins: [
+          'transform-runtime',
+          'transform-async-to-generator'
+        ],
       },
       {
         test: /\.json?$/,

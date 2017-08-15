@@ -1,14 +1,14 @@
 'use strict'
 
-import Koa from 'koa'
-import morgan from 'koa-morgan'
-import bodyParser from 'koa-bodyparser'
-import apiRouter from './server/routes/api'
-import webRouter from './server/routes/web'
-import session from 'koa-session'
-import passport from './server/utils/passport'
-import logger from './server/utils/logger'
-import serve from 'koa-static'
+const Koa =  require('koa')
+, morgan =  require('koa-morgan')
+, bodyParser =  require('koa-bodyparser')
+, apiRouter =  require('./server/routes/api')
+, webRouter =  require('./server/routes/web')
+, session =  require('koa-session')
+, passport =  require('./server/utils/passport')
+, logger =  require('./server/utils/logger')
+, serve =  require('koa-static')
 
 const app = new Koa()
 

@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
 	libpq-dev \
 	git \
 	vim \
+  lsof \
 	redis-tools \
 	postgresql-client \
 	mysql-client
