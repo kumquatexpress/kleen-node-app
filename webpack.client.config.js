@@ -22,7 +22,8 @@ module.exports = {
   devServer: {
     host: '0.0.0.0',
     port: '80',
-    disableHostCheck: true
+    disableHostCheck: true,
+    historyApiFallback: true
   },
   module: {
     loaders: [
@@ -32,7 +33,7 @@ module.exports = {
         loaders: ['react-hot-loader', 'babel-loader?' +
           JSON.stringify({
             cacheDirectory: true,
-            presets: ['es2015', 'react']
+            presets: ['es2015', 'react', 'stage-2', 'stage-0']
           })
         ],
       },
