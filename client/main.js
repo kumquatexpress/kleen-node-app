@@ -5,7 +5,7 @@ import MainApp from './components/MainApp'
 
 const App = () => (
   <MuiThemeProvider>
-    <MainApp />
+    <MainApp count={10} />
   </MuiThemeProvider>
 )
 

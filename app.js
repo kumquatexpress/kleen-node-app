@@ -1,14 +1,15 @@
 'use strict'
 
-const Koa =  require('koa')
-, morgan =  require('koa-morgan')
-, bodyParser =  require('koa-bodyparser')
-, apiRouter =  require('./server/routes/api')
-, webRouter =  require('./server/routes/web')
-, session =  require('koa-session')
-, passport =  require('./server/utils/passport')
-, logger =  require('./server/utils/logger')
-, serve =  require('koa-static')
+const Koa = require('koa')
+, morgan = require('koa-morgan')
+, cors = require('koa-cors')
+, bodyParser = require('koa-bodyparser')
+, apiRouter = require('./server/routes/api')
+, webRouter = require('./server/routes/web')
+, session = require('koa-session')
+, passport = require('./server/utils/passport')
+, logger = require('./server/utils/logger')
+, serve = require('koa-static')
 
 const app = new Koa()
 
@@ -19,6 +20,13 @@ logger.stream = {
 }
 app.keys = ['12ABSf3845ajdsljl9aZ']
 app.use(session({}, app))
+app.use(
+  cors({
+    origin: 'http://dockerhost',
+    methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    credentials: true,
+  })
+)
 
 app.use(passport.initialize())
 app.use(passport.session())

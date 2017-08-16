@@ -5,6 +5,11 @@ const path = require('path')
   template: __dirname + '/public/index.html',
   inject: 'body'
 })
+, isProd = process.env.NODE_ENV === 'production'
+, API_URL = JSON.stringify(isProd ? process.env.API_URL:
+  'http://dockerhost:3000/')
+, NODE_ENV = JSON.stringify(isProd ? 'production' :
+  'development')
 
 module.exports = {
   entry: {
@@ -37,10 +42,10 @@ module.exports = {
     colors: true
   },
   plugins : [
-    new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
+      API_URL,
+      NODE_ENV,
     }),
     HTMLWebpackPluginConfig,
   ],
