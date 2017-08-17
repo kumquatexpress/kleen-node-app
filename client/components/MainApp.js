@@ -1,9 +1,6 @@
 import React from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
-import injectTapEventPlugin from 'react-tap-event-plugin'
 import axios from 'axios'
-
-injectTapEventPlugin()
 
 class MainApp extends React.Component {
   constructor(props) {
