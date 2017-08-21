@@ -10,31 +10,32 @@ const Router = require('koa-router')
 , graphqlValue = require('../utils/graphql')
 , graphqlHTTP = require('koa-graphql')
 
+const _authFunc = function(strat){
+  return async (ctx, next) => {
+    return passport.authenticate(strat, async (err, user) => {
+      if(!user){
+        ctx.status = 401
+      } else {
+        ctx.status = 200
+        ctx.body = { user }
+      }
+    })(ctx, next)
+  }
+}
+
 apiRouter.all('/graphql', graphqlHTTP({
   schema: graphqlValue.spot,
   graphiql: true
 }))
-apiRouter.post('/login', async (ctx, next) => {
-  return passport.authenticate('local', async (err, user) => {
-    if(!user){
-      ctx.status = 401
-    } else {
-      ctx.status = 200
-      ctx.body = { user }
-    }
-  })(ctx, next)
-})
+
+apiRouter.post('/login', _authFunc('local'))
+apiRouter.post('/auth/facebook', _authFunc('facebook-token'))
 apiRouter.get('/auth/facebook',
   passport.authenticate('facebook', {
     scope: [ 'email' ]
   })
 )
-apiRouter.get('/auth/facebook/callback', async (ctx, next) => {
-  return passport.authenticate('facebook', {
-    failureRedirect: '/login?failed_login=1',
-    successRedirect: ctx.request.query.success || '/'
-  })(ctx, next)
-})
+apiRouter.get('/auth/facebook/callback', _authFunc('facebook'))
 
 const routes = [
   {

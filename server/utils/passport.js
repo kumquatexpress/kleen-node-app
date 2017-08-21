@@ -2,6 +2,7 @@
 const passport = require('koa-passport')
 , passport_facebook = require('passport-facebook').Strategy
 , passport_local = require('passport-local').Strategy
+, passport_facebook_token = require('passport-facebook-token')
 , config = require('../../config')
 , {
   user: User, fb_id: FBID, email_id: EmailID
@@ -16,11 +17,7 @@ const deserializeUser = async function(id, done){
   }
 }
 
-const FacebookStrategy = new passport_facebook({
-  clientID: config.auth.FB.APP_ID,
-  clientSecret: config.auth.FB.APP_SECRET,
-  callbackURL: `${config.app.protocol}${config.app.hostname}${config.auth.FB.CALLBACK_URL}`
-}, (access, refresh, profile, cb) => {
+const _facebookAuthFunc = function(access, refresh, profile, cb){
   FBID.find({
     where: { fbid: profile.id }
   }, {
@@ -43,7 +40,24 @@ const FacebookStrategy = new passport_facebook({
       deserializeUser(fbUser.user_id, cb)
     }
   })
-})
+}
+
+const FacebookTokenStrategy = new passport_facebook_token(
+  {
+    clientID: config.auth.FB.APP_ID,
+    clientSecret: config.auth.FB.APP_SECRET,
+  },
+  _facebookAuthFunc
+)
+
+const FacebookStrategy = new passport_facebook(
+  {
+    clientID: config.auth.FB.APP_ID,
+    clientSecret: config.auth.FB.APP_SECRET,
+    callbackURL: `${config.app.protocol}${config.app.hostname}${config.auth.FB.CALLBACK_URL}`
+  },
+  _facebookAuthFunc
+)
 
 const LocalStrategy = new passport_local({
     usernameField: 'email'
@@ -62,6 +76,7 @@ const LocalStrategy = new passport_local({
 
 passport.use(FacebookStrategy)
 passport.use(LocalStrategy)
+passport.use(FacebookTokenStrategy)
 passport.serializeUser(function(user, done) {
   done(null, user.id)
 })

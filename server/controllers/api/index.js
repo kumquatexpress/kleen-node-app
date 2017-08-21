@@ -7,7 +7,9 @@ class IndexController {
   index(args) {
     return { args }
   }
-  async status() {
+  async status({
+    additional: ip
+  }) {
     const info = await Promise.props({
       redis: redis.info(),
       mysql: mysql.query(`SHOW STATUS LIKE 'Table%'`)

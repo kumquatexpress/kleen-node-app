@@ -31,6 +31,6 @@ module.exports = {
 	},
 	app: {
 		protocol: env.IS_PROD ? 'https://' : 'http://',
-		hostname: env.IS_PROD ? 'kleen-node.com' : '192.168.99.100'
+		hostname: env.IS_PROD ? 'kleen-node.com' : '192.168.99.100:3000'
 	}
 }

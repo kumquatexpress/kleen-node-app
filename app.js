@@ -22,7 +22,7 @@ app.keys = ['12ABSf3845ajdsljl9aZ']
 app.use(session({}, app))
 app.use(
   cors({
-    origin: 'http://dockerhost',
+    origin: 'http://192.168.99.100',
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
     credentials: true,
   })

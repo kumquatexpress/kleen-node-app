@@ -7,7 +7,7 @@ const path = require('path')
 })
 , isProd = process.env.NODE_ENV === 'production'
 , API_URL = JSON.stringify(isProd ? process.env.API_URL:
-  'http://dockerhost:3000/')
+  'http://192.168.99.100:3000/')
 , NODE_ENV = JSON.stringify(isProd ? 'production' :
   'development')
 

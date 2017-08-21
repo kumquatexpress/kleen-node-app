@@ -35,7 +35,22 @@ class LoginForm extends React.Component {
   }
 
   loginFacebook(event) {
-    window.location = API_URL+'api/auth/facebook'
+    return FB.login(resp => {
+      const {
+        authResponse: {
+          accessToken,
+          userId
+        }
+      } = resp
+      return axios.post(API_URL+'api/auth/facebook', {
+        access_token: accessToken
+      }).then(resp => {
+        const {
+          data: user
+        } = resp
+        console.log("user", user)
+      })
+    })
   }
 
   render() {
