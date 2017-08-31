@@ -11,12 +11,15 @@ class MainApp extends React.Component {
   }
 
   componentDidMount() {
-    return axios.get(API_URL+'api/spots')
-      .then(body => {
-        return this.setState({
-          spots: body.data.spots
-        })
+    return axios({
+      url: API_URL+'api/spots',
+      withCredentials: true,
+    })
+    .then(body => {
+      return this.setState({
+        spots: body.data.spots
       })
+    })
   }
 
   componentWillUnmount() {

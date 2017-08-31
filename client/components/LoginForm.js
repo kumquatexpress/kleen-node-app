@@ -6,12 +6,16 @@ import { Redirect } from 'react-router'
 class LoginForm extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {email: '', password: '', redirectFacebook: false}
-
+    this.state = {
+      email: '',
+      password: '',
+      title: undefined,
+    }
     this.handleEmailChange = this.handleEmailChange.bind(this)
     this.handlePasswordChange = this.handlePasswordChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.loginFacebook = this.loginFacebook.bind(this)
+    this.setTitle = this.setTitle.bind(this)
   }
 
   handleEmailChange(event) {
@@ -27,10 +31,16 @@ class LoginForm extends React.Component {
     return axios.post(API_URL+'api/login', {
       email: this.state.email,
       password: this.state.password,
-    }).then(body => {
-      console.log("body", body)
-    }).catch(err => {
-      console.log("status", err.response.status)
+    }).then(this.setTitle)
+  }
+
+  setTitle(resp) {
+    const {
+      data: user
+    } = resp
+
+    this.setState({
+      title: `Hello ${user.first_name}!`
     })
   }
 
@@ -42,20 +52,26 @@ class LoginForm extends React.Component {
           userId
         }
       } = resp
-      return axios.post(API_URL+'api/auth/facebook', {
-        access_token: accessToken
-      }).then(resp => {
-        const {
-          data: user
-        } = resp
-        console.log("user", user)
-      })
+      return axios({
+        url: API_URL+'api/auth/facebook',
+        method: 'post',
+        withCredentials: true,
+        data: {
+          access_token: accessToken
+        },
+      }).then(this.setTitle)
     })
   }
 
   render() {
+    let greeting = null;
+    if(this.state.title){
+      greeting = <div>{this.state.title}</div>
+    }
+
     return (
       <div>
+        {greeting}
         <label>
           Email
           <input type="text" value={this.state.email} onChange={this.handleEmailChange} />

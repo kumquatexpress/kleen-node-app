@@ -30,7 +30,7 @@ const BasicExample = () => (
       </ul>
 
       <hr/>
-      <Route exact path="/" component={App}/>
+      <Route path="/" component={App}/>
       <Route exact path="/login" component={Login}/>
     </div>
   </Router>

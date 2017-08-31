@@ -1,6 +1,7 @@
 'use strict'
 const _ = require('lodash')
 , ApiError = require('../types/api_error')
+, logger = require('../utils/logger')
 
 const checkAndSetDefaults = (checks, paramsToCheck) => {
   return _.reduce(checks, (acc, check, _arg) => {

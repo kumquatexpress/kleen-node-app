@@ -17,7 +17,8 @@ const _authFunc = function(strat){
         ctx.status = 401
       } else {
         ctx.status = 200
-        ctx.body = { user }
+        ctx.body = user
+        return ctx.login(user)
       }
     })(ctx, next)
   }

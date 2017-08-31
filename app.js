@@ -10,6 +10,7 @@ const Koa = require('koa')
 , passport = require('./server/utils/passport')
 , logger = require('./server/utils/logger')
 , serve = require('koa-static')
+, config = require('./config')
 
 const app = new Koa()
 
@@ -19,7 +20,7 @@ logger.stream = {
   }
 }
 app.keys = ['12ABSf3845ajdsljl9aZ']
-app.use(session({}, app))
+app.use(session(app))
 app.use(
   cors({
     origin: 'http://192.168.99.100',
@@ -32,8 +33,10 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(bodyParser())
-app.use(morgan('combined', { "stream": logger.stream }))
-
+app.use(
+  morgan(`:url :status :response-time ms - :res[content-length]`,
+    { "stream": logger.stream })
+)
 app.use(serve(__dirname + '/public'))
 app.use(apiRouter.routes())
 app.use(apiRouter.allowedMethods())
